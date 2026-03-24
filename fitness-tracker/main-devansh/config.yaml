@@ -1,0 +1,89 @@
+# config.yaml
+
+# Model configurations
+models:
+  mediapipe:
+    enabled: true
+    complexity: 1  # 0, 1, or 2
+    smooth_landmarks: true
+    enable_segmentation: false
+    min_detection_confidence: 0.5
+    min_tracking_confidence: 0.5
+  
+  movenet:
+    enabled: true
+    variants:
+      - lightning  # Fast, mobile-optimized
+      - thunder    # Accurate, slower
+    batch_size: 1
+  
+  openpose:
+    enabled: false  # Set to true if models are downloaded
+    model_path: "models/openpose/pose_iter_440000.caffemodel"
+    proto_path: "models/openpose/pose_deploy_linevec.prototxt"
+    input_width: 368
+    input_height: 368
+    threshold: 0.1
+
+# Exercise configurations
+exercises:
+  squat:
+    angle_thresholds:
+      down: 90
+      up: 160
+      min_range: 40
+    fault_thresholds:
+      knee_valgus: -20  # pixels
+      forward_lean: 30   # degrees
+      depth_threshold: 10 # pixels below knee
+  
+  shoulder_press:
+    angle_thresholds:
+      down: 90
+      up: 160
+      min_range: 50
+    fault_thresholds:
+      elbow_flare: 100   # pixels
+      asymmetry: 30      # pixels
+      back_arch: 30      # pixels
+  
+  deadlift:
+    angle_thresholds:
+      down: 90
+      up: 160
+      min_range: 45
+    fault_thresholds:
+      back_rounding: 15  # degrees
+      bar_drift: 50      # pixels
+  
+  pushup:
+    angle_thresholds:
+      down: 90
+      up: 160
+      min_range: 40
+    fault_thresholds:
+      elbow_flare: 45    # degrees
+      hip_sag: 15        # degrees
+      neck_angle: 30     # degrees
+
+# Processing settings
+processing:
+  skip_frames: 1  # Process every Nth frame (1 = no skipping)
+  smoothing_window: 5
+  confidence_threshold: 0.2
+  max_people: 1
+  
+# Output settings
+output:
+  save_annotated_video: true
+  save_plots: true
+  save_json: true
+  video_codec: "mp4v"
+  plot_format: "png"
+  
+# Performance settings
+performance:
+  use_gpu: true
+  batch_processing: false
+  target_fps: 30
+  mobile_optimization: false
